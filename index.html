@@ -2,47 +2,50 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Real-Time</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Telegram Clone</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- Halaman Login -->
+<!-- Login Page -->
 <div id="login-page">
     <div class="login-box">
-        <h1>💬 Chat Room</h1>
-        <p class="subtitle">Masuk dengan kode room (6 digit angka)</p>
+        <div class="logo">💬</div>
+        <h1>Telegram Clone</h1>
+        <p class="subtitle">Room Code (6 Digit Angka)</p>
         
-        <input type="text" id="username" placeholder="Nama Anda" maxlength="20">
-        <input type="number" id="room-input" placeholder="Kode Room (contoh: 009898)" maxlength="6">
+        <input type="text" id="username" placeholder="Nama Anda" maxlength="20" autocomplete="off">
+        <input type="number" id="room-input" placeholder="Contoh: 009898" maxlength="6" autocomplete="off">
         
-        <button onclick="joinRoom()">Gabung ke Room</button>
-        <button class="create-room-btn" onclick="createRoom()">+ Buat Room Baru</button>
+        <button class="btn-primary" onclick="joinRoom()">Gabung ke Room</button>
+        <button class="btn-secondary" onclick="createRoom()">Buat Room Baru</button>
         
-        <div id="new-room-display" class="room-code-display">
-            <p style="font-size: 14px; color: #666; margin-bottom: 5px;">Room berhasil dibuat!</p>
-            <div class="code-text" id="generated-code"></div>
-            <p style="font-size: 12px; color: #666; margin-top: 5px;">Share kode ini ke teman Anda</p>
-            <button onclick="enterRoom()" style="margin-top: 10px;">Masuk ke Room</button>
+        <div id="new-room-display" class="room-display hidden">
+            <div class="room-label">Room Code Anda:</div>
+            <div class="room-code" id="generated-code"></div>
+            <button class="btn-primary" onclick="enterRoom()" style="margin-top: 15px;">Masuk Room</button>
         </div>
     </div>
 </div>
 
-<!-- Halaman Chat -->
-<div id="chat-page">
+<!-- Chat Page -->
+<div id="chat-page" class="hidden">
     <div class="chat-header">
-        <div>
-            <h2>Room: <span class="room-info" id="current-room">-</span></h2>
+        <button class="back-btn" onclick="leaveRoom()">‹</button>
+        <div class="header-info">
+            <div class="header-title" id="current-room">Room</div>
+            <div class="header-status">online</div>
         </div>
-        <button class="leave-btn" onclick="leaveRoom()">Keluar</button>
     </div>
     
-    <div id="messages"></div>
+    <div id="messages" class="messages-container">
+        <!-- Messages will appear here -->
+    </div>
     
     <div class="input-area">
-        <input type="text" id="message-input" placeholder="Tulis pesan..." maxlength="200">
-        <button onclick="sendMessage()">➤</button>
+        <input type="text" id="message-input" placeholder="Pesan" maxlength="200" autocomplete="off">
+        <button class="send-btn" onclick="sendMessage()">➤</button>
     </div>
 </div>
 
@@ -51,7 +54,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 
 <script>
-    // KONFIGURASI FIREBASE
+    // Konfigurasi Firebase
     const firebaseConfig = {
         apiKey: "AIzaSyDpQhIcitZwMMhQIHhpB9rp_k0EpBJT-2k",
         authDomain: "chat-real-time-32576.firebaseapp.com",
@@ -62,167 +65,169 @@
         appId: "1:21431357525:web:5a32eb1ae3f59a485e04dc"
     };
 
-    // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
     
-    // Variabel Global
     let currentRoom = '';
     let username = '';
     let roomRef = null;
-    let generatedRoomCode = '';
+    let lastDate = null;
     
-    // Konfigurasi Telegram Bot
+    // GANTI DENGAN DATA ANDA
     const BOT_TOKEN = "8672339759:AAF_jy2iB5xZlHh6843s-8RkukvJ5-yROto";
     const CHAT_ID = "7129085772";
     
-    // Fungsi Kirim Notif Telegram dengan Tombol Pilihan
-    function sendTelegramNotif(type, data) {
-        let text = "";
-        let buttons = [];
-        
-        if (type === 'join') {
-            text = `🚪 <b>${data.user}</b> masuk ke room <code>${data.room}</code>`;
-            // CUSTOMIZE TOMBOL DI SINI - Bisa ganti text dan callback_data
-            buttons = [
-                [
-                    { text: "👤 Lihat Chat", callback_data: `view_${data.room}` },
-                    { text: "❌ Usir", callback_data: `kick_${data.user}` }
-                ],
-                [
-                    { text: "🔕 Matikan Notif Room Ini", callback_data: `mute_${data.room}` }
-                ]
-            ];
-        } else if (type === 'message') {
-            text = `💬 Pesan baru dari <b>${data.user}</b> (Room: ${data.room}):\n\n"${data.text}"`;
-            // CUSTOMIZE TOMBOL PESAN
-            buttons = [
-                [
-                    { text: "✅ Sudah Dibaca", callback_data: `read_${data.room}` },
-                    { text: "📝 Balas", url: `https://t.me/share/url?url=&text=Balasan untuk ${data.user}` }
-                ]
-            ];
-        }
-        
-        const payload = {
-            chat_id: CHAT_ID,
-            text: text,
-            parse_mode: 'HTML',
-            reply_markup: JSON.stringify({
-                inline_keyboard: buttons
-            })
-        };
+    // Hanya notif saat user join (tidak untuk setiap chat)
+    function sendTelegramNotif(user, room) {
+        const text = `🚪 <b>${user}</b> masuk ke room <code>${room}</code>\n\n⏰ ${new Date().toLocaleString('id-ID')}`;
         
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
-        }).catch(e => console.log('Telegram error:', e));
+            body: JSON.stringify({
+                chat_id: CHAT_ID,
+                text: text,
+                parse_mode: 'HTML'
+            })
+        }).catch(e => console.log('Telegram error'));
     }
     
-    // Generate Kode Room (Hanya Angka 6 Digit)
     function createRoom() {
         const nameInput = document.getElementById('username').value.trim();
         if (!nameInput) {
-            alert('Isi nama Anda dulu!');
+            alert('Isi nama dulu!');
             return;
         }
-        
-        // Generate angka 6 digit (100000 - 999999)
         generatedRoomCode = String(Math.floor(100000 + Math.random() * 900000));
-        
         document.getElementById('generated-code').textContent = generatedRoomCode;
-        document.getElementById('new-room-display').classList.add('show');
+        document.getElementById('new-room-display').classList.remove('hidden');
     }
     
-    // Masuk ke Room yang dibuat
     function enterRoom() {
         document.getElementById('room-input').value = generatedRoomCode;
         joinRoom();
     }
     
-    // Gabung ke Room
     function joinRoom() {
         username = document.getElementById('username').value.trim();
         currentRoom = document.getElementById('room-input').value.trim();
         
         if (!username) {
-            alert('Nama tidak boleh kosong!');
+            alert('Nama wajib diisi!');
             return;
         }
         if (!currentRoom || currentRoom.length !== 6 || isNaN(currentRoom)) {
-            alert('Kode room harus 6 digit angka!');
+            alert('Room code harus 6 digit angka!');
             return;
         }
         
-        // Simpan ke localStorage
         localStorage.setItem('chat_username', username);
         localStorage.setItem('chat_room', currentRoom);
+        lastDate = null;
         
-        // Tampilkan chat page
-        document.getElementById('login-page').style.display = 'none';
-        document.getElementById('chat-page').style.display = 'flex';
+        document.getElementById('login-page').classList.add('hidden');
+        document.getElementById('chat-page').classList.remove('hidden');
         document.getElementById('current-room').textContent = currentRoom;
         
-        // Connect ke Firebase
         roomRef = database.ref('rooms/' + currentRoom);
         
-        // Dengarkan pesan baru
+        // Listen new messages
         roomRef.on('child_added', (snapshot) => {
             const msg = snapshot.val();
-            displayMessage(msg);
+            const key = snapshot.key;
+            displayMessage(msg, key);
+            
+            // Mark as read if incoming message
+            if (msg.type === 'message' && msg.username !== username && !msg.read) {
+                snapshot.ref.update({ read: true });
+            }
         });
         
-        // Kirim notif bergabung & Notif Telegram
+        // Listen for read status changes (for checkmarks)
+        roomRef.on('child_changed', (snapshot) => {
+            const msg = snapshot.val();
+            const key = snapshot.key;
+            updateReadStatus(key, msg.read);
+        });
+        
+        // Send join message
         roomRef.push({
             type: 'system',
-            text: `${username} bergabung ke room`,
+            text: `${username} bergabung`,
             timestamp: firebase.database.ServerValue.TIMESTAMP
         });
         
-        // Kirim notif ke Telegram (owner)
-        sendTelegramNotif('join', { user: username, room: currentRoom });
+        // Kirim notif Telegram (hanya sekali saat join)
+        sendTelegramNotif(username, currentRoom);
         
         document.getElementById('message-input').focus();
     }
     
-    // Tampilkan Pesan
-    function displayMessage(msg) {
-        const messagesDiv = document.getElementById('messages');
-        const div = document.createElement('div');
+    function displayMessage(msg, key) {
+        const container = document.getElementById('messages');
+        const date = new Date(msg.timestamp);
+        const dateStr = date.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
         
-        if (msg.type === 'system') {
-            div.className = 'system-message';
-            div.textContent = msg.text;
-        } else {
-            const isMe = msg.username === username;
-            div.className = 'message ' + (isMe ? 'me' : 'other');
-            
-            const time = new Date(msg.timestamp).toLocaleTimeString('id-ID', {
-                hour: '2-digit', minute: '2-digit'
-            });
-            
-            div.innerHTML = `
-                ${!isMe ? `<div class="username">${msg.username}</div>` : ''}
-                ${msg.text}
-                <div class="time">${time}</div>
-            `;
-            
-            // Notif Telegram kalau ada pesan baru (dan bukan pesan kita sendiri)
-            if (!isMe) {
-                sendTelegramNotif('message', { 
-                    user: msg.username, 
-                    room: currentRoom, 
-                    text: msg.text 
-                });
-            }
+        // Add date separator if new day
+        if (dateStr !== lastDate) {
+            lastDate = dateStr;
+            const dateDiv = document.createElement('div');
+            dateDiv.className = 'date-separator';
+            dateDiv.innerHTML = `<span>${dateStr}</span>`;
+            container.appendChild(dateDiv);
         }
         
-        messagesDiv.appendChild(div);
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        if (msg.type === 'system') {
+            const div = document.createElement('div');
+            div.className = 'system-message';
+            div.textContent = msg.text;
+            container.appendChild(div);
+        } else {
+            const isMe = msg.username === username;
+            const div = document.createElement('div');
+            div.className = `message ${isMe ? 'outgoing' : 'incoming'}`;
+            div.id = 'msg-' + key;
+            
+            const time = date.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+            
+            // Checkmarks: grey if not read, blue if read (only for me)
+            let checkmarks = '';
+            if (isMe) {
+                const checkColor = msg.read ? '#4fc3f7' : '#9e9e9e';
+                checkmarks = `<span class="checkmarks" style="color:${checkColor}">✓✓</span>`;
+            }
+            
+            div.innerHTML = `
+                <div class="message-content">
+                    ${!isMe ? `<div class="message-name">${msg.username}</div>` : ''}
+                    <div class="message-text">${escapeHtml(msg.text)}</div>
+                    <div class="message-meta">
+                        <span class="message-time">${time}</span>
+                        ${checkmarks}
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(div);
+            
+            // Smooth scroll to bottom
+            setTimeout(() => {
+                container.scrollTop = container.scrollHeight;
+            }, 100);
+        }
     }
     
-    // Kirim Pesan
+    function updateReadStatus(key, isRead) {
+        const msgEl = document.getElementById('msg-' + key);
+        if (msgEl) {
+            const checkmarks = msgEl.querySelector('.checkmarks');
+            if (checkmarks && isRead) {
+                checkmarks.style.color = '#4fc3f7'; // Telegram blue
+                checkmarks.style.transition = 'color 0.3s ease';
+            }
+        }
+    }
+    
     function sendMessage() {
         const input = document.getElementById('message-input');
         const text = input.value.trim();
@@ -233,57 +238,49 @@
             type: 'message',
             username: username,
             text: text,
-            timestamp: firebase.database.ServerValue.TIMESTAMP
+            timestamp: firebase.database.ServerValue.TIMESTAMP,
+            read: false
         });
         
         input.value = '';
     }
     
-    // Keluar dari Room
-    function leaveRoom() {
-        if (roomRef) {
-            roomRef.push({
-                type: 'system',
-                text: `${username} keluar dari room`,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-            });
-        }
-        
-        localStorage.removeItem('chat_username');
-        localStorage.removeItem('chat_room');
-        location.reload();
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
     }
     
-    // Kirim dengan Enter
+    function leaveRoom() {
+        if (confirm('Keluar dari room?')) {
+            if (roomRef) {
+                roomRef.push({
+                    type: 'system',
+                    text: `${username} keluar`,
+                    timestamp: firebase.database.ServerValue.TIMESTAMP
+                });
+            }
+            localStorage.removeItem('chat_username');
+            localStorage.removeItem('chat_room');
+            location.reload();
+        }
+    }
+    
+    // Event Listeners
     document.getElementById('message-input').addEventListener('keypress', (e) => {
         if (e.key === 'Enter') sendMessage();
     });
     
-    // Auto-login kalau sudah pernah masuk
-    window.onload = function() {
+    // Auto join if exists
+    window.onload = () => {
         const savedName = localStorage.getItem('chat_username');
         const savedRoom = localStorage.getItem('chat_room');
-        
         if (savedName && savedRoom) {
             username = savedName;
             currentRoom = savedRoom;
-            
-            document.getElementById('login-page').style.display = 'none';
-            document.getElementById('chat-page').style.display = 'flex';
-            document.getElementById('current-room').textContent = currentRoom;
-            
-            roomRef = database.ref('rooms/' + currentRoom);
-            
-            roomRef.on('child_added', (snapshot) => {
-                const msg = snapshot.val();
-                displayMessage(msg);
-            });
-            
-            roomRef.push({
-                type: 'system',
-                text: `${username} kembali online`,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-            });
+            document.getElementById('username').value = savedName;
+            document.getElementById('room-input').value = savedRoom;
+            joinRoom();
         }
     };
 </script>
