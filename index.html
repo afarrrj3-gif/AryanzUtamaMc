@@ -3,177 +3,200 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rekber MC - Middleman Chat</title>
+    <title>Rekber MC - AryanzUtama</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- HALAMAN LOGIN/SETUP -->
-<div id="login-page">
-    <div class="rekber-container">
-        <div class="logo-rekber">🛡️</div>
-        <h1>Rekber MC</h1>
-        <p class="subtitle">Middleman Transaction Center</p>
-        
-        <!-- Step 1: Nama & Role -->
-        <div id="step-role">
-            <input type="text" id="username" placeholder="Nama Lengkap" maxlength="20">
-            
-            <div class="role-selector">
-                <p class="label">Pilih Peran:</p>
-                <div class="role-buttons">
-                    <button type="button" class="role-btn" onclick="selectRole('buyer')" id="btn-buyer">
-                        <span class="role-icon">🛒</span>
-                        <span>Buyer (Pembeli)</span>
-                    </button>
-                    <button type="button" class="role-btn" onclick="selectRole('seller')" id="btn-seller">
-                        <span class="role-icon">🏪</span>
-                        <span>Seller (Penjual)</span>
-                    </button>
-                </div>
-            </div>
+<!-- HALAMAN LOGIN -->
+<div id="login-page" class="fade-in">
+    <div class="login-container">
+        <!-- Profile Picture -->
+        <div class="profile-section slide-down">
+            <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg" alt="AryanzUtama" class="profile-img">
+            <h1>AryanzUtama</h1>
+            <p class="tagline">Middleman Transaction Center</p>
         </div>
 
-        <!-- Step 2A: Form Buyer -->
-        <div id="form-buyer" class="hidden">
-            <div class="back-link" onclick="backToRole()">‹ Kembali</div>
-            <h3>Masuk sebagai Buyer</h3>
+        <!-- Role Selection -->
+        <div class="role-container slide-up">
+            <p class="select-text">Pilih Peran Anda</p>
             
-            <div class="input-group">
-                <label>Nomor WhatsApp <span class="required">*</span></label>
-                <input type="tel" id="buyer-wa" placeholder="08xxxxxxxxxx" maxlength="15">
-            </div>
-            
-            <div class="input-group">
-                <label>Kode Room <span class="required">*</span></label>
-                <input type="number" id="buyer-code" placeholder="Masukkan 6 digit angka" maxlength="6" oninput="validateBuyerCode()">
-                <small class="hint">Kode dari Seller (6 digit angka)</small>
-            </div>
-            
-            <button id="btn-join-buyer" class="btn-primary" onclick="showJoinModal()" disabled>
-                Masuk Room
-            </button>
-        </div>
-
-        <!-- Step 2B: Form Seller -->
-        <div id="form-seller" class="hidden">
-            <div class="back-link" onclick="backToRole()">‹ Kembali</div>
-            <h3>Buat Room sebagai Seller</h3>
-            
-            <div class="input-group">
-                <label>Nominal Transaksi <span class="required">*</span></label>
-                <input type="text" id="nominal" placeholder="50000" oninput="formatRupiah(this)">
-                <div class="rupiah-display" id="rupiah-display">Rp0</div>
-            </div>
-            
-            <div class="input-group">
-                <label>Tipe Transaksi <span class="required">*</span></label>
-                <div class="inc-ex-selector">
-                    <button type="button" class="inc-btn" onclick="selectIncExc('inc')">INC</button>
-                    <button type="button" class="exc-btn" onclick="selectIncExc('exc')">EXC</button>
-                </div>
-                <input type="hidden" id="inc-exc-value">
-            </div>
-            
-            <div class="input-group">
-                <label>Nomor WhatsApp <span class="required">*</span></label>
-                <input type="tel" id="seller-wa" placeholder="08xxxxxxxxxx" maxlength="15" oninput="validateSellerForm()">
-            </div>
-            
-            <button id="btn-create-room" class="btn-success" onclick="createSellerRoom()" disabled>
-                Buat Room
-            </button>
-            
-            <!-- Hasil Room Code -->
-            <div id="seller-result" class="hidden result-box">
-                <div class="result-label">Room Code:</div>
-                <div class="result-code" id="generated-code">000000</div>
-                <button class="btn-copy" onclick="copyCode()">📋 Salin Code</button>
-                <button class="btn-primary" onclick="enterAsSeller()" style="margin-top: 10px;">
-                    Masuk Room
+            <div class="role-grid">
+                <button class="role-card" onclick="selectRole('buyer')">
+                    <span class="role-emoji">🛒</span>
+                    <span class="role-title">BUYER</span>
+                    <span class="role-desc">Pembeli</span>
+                </button>
+                
+                <button class="role-card" onclick="selectRole('seller')">
+                    <span class="role-emoji">🏪</span>
+                    <span class="role-title">SELLER</span>
+                    <span class="role-desc">Penjual</span>
                 </button>
             </div>
         </div>
-    </div>
-</div>
 
-<!-- MODAL KONFIRMASI BUYER -->
-<div id="modal-join" class="modal hidden">
-    <div class="modal-content">
-        <h3>Konfirmasi Masuk Room</h3>
-        <p>Anda akan masuk sebagai <strong>Buyer</strong></p>
-        <div class="modal-info">
-            <div>Nama: <span id="modal-buyer-name"></span></div>
-            <div>WA: <span id="modal-buyer-wa"></span></div>
-            <div>Room: <span id="modal-buyer-code"></span></div>
-        </div>
-        <div class="modal-buttons">
-            <button class="btn-secondary" onclick="closeModal()">Batal</button>
-            <button class="btn-primary" onclick="joinAsBuyer()">Konfirmasi</button>
-        </div>
-    </div>
-</div>
+        <!-- Forms Container -->
+        <div id="form-container" class="hidden scale-in">
+            <!-- Form Buyer -->
+            <div id="form-buyer" class="hidden">
+                <div class="form-header">
+                    <button class="btn-back" onclick="backToRole()">‹</button>
+                    <h3>Masuk sebagai Buyer</h3>
+                </div>
+                
+                <div class="input-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" id="buyer-name" placeholder="Nama Anda">
+                </div>
+                
+                <div class="input-group">
+                    <label>Nomor WhatsApp</label>
+                    <input type="tel" id="buyer-wa" placeholder="08xxxxxxxxxx">
+                </div>
+                
+                <div class="input-group">
+                    <label>Kode Room (6 Digit)</label>
+                    <input type="number" id="buyer-code" placeholder="Contoh: 009898" oninput="validateBuyer()">
+                </div>
+                
+                <button id="btn-buyer-join" class="btn-main" onclick="showJoinModal()" disabled>
+                    Masuk Room
+                </button>
+            </div>
 
-<!-- HALAMAN CHAT -->
-<div id="chat-page" class="hidden">
-    <!-- Header Rekber -->
-    <div class="rekber-header">
-        <div class="header-left">
-            <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg" alt="Admin" class="admin-avatar">
-            <div class="admin-status">
-                <div class="admin-name">Admin MC</div>
-                <div class="admin-online">Online</div>
+            <!-- Form Seller -->
+            <div id="form-seller" class="hidden">
+                <div class="form-header">
+                    <button class="btn-back" onclick="backToRole()">‹</button>
+                    <h3>Buat Room Baru</h3>
+                </div>
+                
+                <div class="input-group">
+                    <label>Nama Anda</label>
+                    <input type="text" id="seller-name" placeholder="Nama Seller">
+                </div>
+                
+                <div class="input-group">
+                    <label>Nominal Transaksi</label>
+                    <input type="text" id="nominal" placeholder="50000" oninput="formatRupiah(this)">
+                    <div class="rupiah-preview" id="rupiah-preview">Rp0</div>
+                </div>
+                
+                <div class="input-group">
+                    <label>Tipe Transaksi</label>
+                    <div class="type-selector">
+                        <button type="button" class="type-btn" onclick="selectType('inc')" id="btn-inc">INC</button>
+                        <button type="button" class="type-btn" onclick="selectType('exc')" id="btn-exc">EXC</button>
+                    </div>
+                    <input type="hidden" id="trans-type">
+                </div>
+                
+                <div class="input-group">
+                    <label>Nomor WhatsApp</label>
+                    <input type="tel" id="seller-wa" placeholder="08xxxxxxxxxx" oninput="validateSeller()">
+                </div>
+                
+                <button id="btn-create" class="btn-main btn-green" onclick="createRoom()" disabled>
+                    Buat Room
+                </button>
+                
+                <div id="room-result" class="room-result hidden">
+                    <div class="code-box">
+                        <span class="code-label">ROOM CODE</span>
+                        <span class="code-number" id="room-code-display">000000</span>
+                        <button class="btn-copy" onclick="copyRoomCode()">📋 Salin Code</button>
+                    </div>
+                    <button class="btn-main" onclick="enterRoom()">Masuk Room</button>
+                </div>
             </div>
         </div>
-        
-        <div class="header-center">
-            <div class="transaction-nominal" id="display-nominal">Rp0</div>
-            <div class="transaction-type" id="display-type">-</div>
-        </div>
-        
-        <div class="header-right">
-            <button class="btn-menu" onclick="showRoomInfo()">⋮</button>
-        </div>
-    </div>
 
-    <!-- Info Bar (Room Code & Copy) -->
-    <div class="info-bar">
-        <div class="room-info-display">
-            <span>Room:</span>
-            <strong id="chat-room-code">000000</strong>
-            <button onclick="copyRoomCode()" class="btn-copy-small">📋</button>
+        <!-- Powered By (Click for Admin) -->
+        <div class="powered-by" onclick="showAdminLogin()">
+            <span>PoweredByAryanzUtama</span>
         </div>
-        <div class="mc-info">
-            <span>MC: <span id="mc-name">Admin</span></span>
-            <span class="divider">|</span>
-            <span id="inc-exc-display">INC</span>
-        </div>
-    </div>
-
-    <!-- Area Chat -->
-    <div id="messages" class="messages-container"></div>
-
-    <!-- Input Area -->
-    <div class="input-area">
-        <button class="btn-attach" onclick="showFormatMenu()">📎</button>
-        <input type="text" id="message-input" placeholder="Tulis pesan..." maxlength="200">
-        <button class="btn-send" onclick="sendMessage()">➤</button>
-    </div>
-
-    <!-- Format Menu (Popup) -->
-    <div id="format-menu" class="format-popup hidden">
-        <button onclick="insertFormat('payment')">💳 Format Payment</button>
-        <button onclick="insertFormat('done')">✅ Format Done</button>
-        <button onclick="closeFormatMenu()">Tutup</button>
     </div>
 </div>
 
-<!-- Firebase -->
+<!-- ADMIN LOGIN MODAL -->
+<div id="admin-modal" class="modal hidden">
+    <div class="modal-content scale-in">
+        <h3>🔐 Admin Access</h3>
+        <p>Masukkan password admin</p>
+        <input type="password" id="admin-pass" placeholder="Password..." style="margin-top: 15px; text-align: center;">
+        <div class="modal-actions">
+            <button class="btn-secondary" onclick="closeAdminModal()">Batal</button>
+            <button class="btn-main" onclick="checkAdmin()">Masuk</button>
+        </div>
+    </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="admin-page" class="hidden">
+    <div class="admin-header">
+        <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg" class="admin-avatar-small">
+        <span>Admin Panel - Semua Room</span>
+        <button onclick="logoutAdmin()" class="btn-icon">🚪</button>
+    </div>
+    
+    <div id="rooms-list" class="rooms-list">
+        <div class="loading">Memuat rooms...</div>
+    </div>
+</div>
+
+<!-- CHAT PAGE -->
+<div id="chat-page" class="hidden">
+    <!-- Header -->
+    <div class="chat-header-telegram">
+        <div class="header-left">
+            <button onclick="leaveRoom()" class="btn-back-chat">‹</button>
+            <div class="header-info-row">
+                <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg" class="chat-avatar">
+                <div class="header-text">
+                    <div class="chat-name" id="display-nominal-chat">Rp0</div>
+                    <div class="chat-type" id="display-type-chat">INC</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Room Code Banner (Muncul setelah welcome message) -->
+    <div id="room-banner" class="room-banner hidden">
+        <div class="banner-content">
+            <span class="banner-label">Room Code:</span>
+            <span class="banner-code" id="banner-code">000000</span>
+            <button onclick="copyBannerCode()" class="btn-copy-small">Salin</button>
+        </div>
+    </div>
+
+    <!-- Messages -->
+    <div id="messages" class="messages-area"></div>
+
+    <!-- Input Area (Telegram Style) -->
+    <div class="input-telegram">
+        <div class="input-blur-bg"></div>
+        <div class="input-container">
+            <button class="btn-attach" onclick="document.getElementById('file-input').click()">📎</button>
+            <input type="file" id="file-input" class="hidden" accept="image/*" onchange="handleImageUpload(this)">
+            
+            <div class="input-wrapper">
+                <input type="text" id="message-input" placeholder="Pesan" onkeypress="handleKeyPress(event)">
+            </div>
+            
+            <button class="btn-send-float" onclick="sendMessage()">➤</button>
+        </div>
+    </div>
+</div>
+
+<!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
 <script>
-    // Config Firebase
+    // Firebase Config
     const firebaseConfig = {
         apiKey: "AIzaSyDpQhIcitZwMMhQIHhpB9rp_k0EpBJT-2k",
         authDomain: "chat-real-time-32576.firebaseapp.com",
@@ -186,6 +209,7 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+    const storage = firebase.storage();
     
     // Telegram Config
     const BOT_TOKEN = "8672339759:AAF_jy2iB5xZlHh6843s-8RkukvJ5-yROto";
@@ -194,265 +218,239 @@
     let currentRole = '';
     let currentName = '';
     let currentRoom = '';
-    let roomData = {};
+    let currentType = '';
+    let currentNominal = '';
     let isAdmin = false;
     let roomRef = null;
 
-    // Format Rupiah AI
+    // Format Rupiah
     function formatRupiah(input) {
-        let value = input.value.replace(/[^0-9]/g, '');
-        input.value = value;
-        
-        if (value) {
-            const number = parseInt(value);
-            const formatted = new Intl.NumberFormat('id-ID', {
-                style: 'currency',
-                currency: 'IDR',
-                minimumFractionDigits: 0
-            }).format(number);
-            document.getElementById('rupiah-display').textContent = formatted;
+        let val = input.value.replace(/\D/g, '');
+        input.value = val;
+        if(val) {
+            let num = parseInt(val);
+            document.getElementById('rupiah-preview').textContent = 
+                new Intl.NumberFormat('id-ID', {style: 'currency', currency: 'IDR'}).format(num);
         } else {
-            document.getElementById('rupiah-display').textContent = 'Rp0';
+            document.getElementById('rupiah-preview').textContent = 'Rp0';
         }
-        validateSellerForm();
+        validateSeller();
     }
 
     // Select Role
     function selectRole(role) {
         currentRole = role;
-        document.getElementById('step-role').classList.add('hidden');
+        document.querySelector('.role-container').classList.add('hidden');
+        document.getElementById('form-container').classList.remove('hidden');
         
-        if (role === 'buyer') {
+        if(role === 'buyer') {
             document.getElementById('form-buyer').classList.remove('hidden');
+            document.getElementById('form-seller').classList.add('hidden');
         } else {
             document.getElementById('form-seller').classList.remove('hidden');
+            document.getElementById('form-buyer').classList.add('hidden');
         }
     }
 
     function backToRole() {
+        document.getElementById('form-container').classList.add('hidden');
+        document.querySelector('.role-container').classList.remove('hidden');
         document.getElementById('form-buyer').classList.add('hidden');
         document.getElementById('form-seller').classList.add('hidden');
-        document.getElementById('step-role').classList.remove('hidden');
         currentRole = '';
     }
 
     // Select INC/EXC
-    function selectIncExc(type) {
-        document.getElementById('inc-exc-value').value = type.toUpperCase();
-        document.querySelectorAll('.inc-ex-selector button').forEach(btn => {
-            btn.classList.remove('selected');
-        });
-        event.target.classList.add('selected');
-        validateSellerForm();
+    function selectType(type) {
+        document.getElementById('trans-type').value = type;
+        document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById('btn-'+type).classList.add('active');
+        validateSeller();
     }
 
-    // Validasi Buyer
-    function validateBuyerCode() {
-        const code = document.getElementById('buyer-code').value;
-        const btn = document.getElementById('btn-join-buyer');
-        btn.disabled = !(code.length === 6 && !isNaN(code));
-    }
-
-    // Validasi Seller
-    function validateSellerForm() {
-        const nominal = document.getElementById('nominal').value;
-        const wa = document.getElementById('seller-wa').value;
-        const incExc = document.getElementById('inc-exc-value').value;
-        const btn = document.getElementById('btn-create-room');
-        
-        btn.disabled = !(nominal && wa && incExc);
-    }
-
-    // Modal Buyer
-    function showJoinModal() {
-        const name = document.getElementById('username').value;
+    // Validasi
+    function validateBuyer() {
+        const name = document.getElementById('buyer-name').value;
         const wa = document.getElementById('buyer-wa').value;
         const code = document.getElementById('buyer-code').value;
-        
-        if (!name || !wa || code.length !== 6) {
-            alert('Lengkapi semua data!');
-            return;
-        }
-        
-        document.getElementById('modal-buyer-name').textContent = name;
-        document.getElementById('modal-buyer-wa').textContent = wa;
-        document.getElementById('modal-buyer-code').textContent = code;
-        document.getElementById('modal-join').classList.remove('hidden');
+        document.getElementById('btn-buyer-join').disabled = !(name && wa && code.length === 6);
     }
 
-    function closeModal() {
-        document.getElementById('modal-join').classList.add('hidden');
+    function validateSeller() {
+        const name = document.getElementById('seller-name').value;
+        const nominal = document.getElementById('nominal').value;
+        const wa = document.getElementById('seller-wa').value;
+        const type = document.getElementById('trans-type').value;
+        document.getElementById('btn-create').disabled = !(name && nominal && wa && type);
     }
 
-    // Create Room Seller
-    function createSellerRoom() {
-        currentName = document.getElementById('username').value;
-        if (!currentName) {
-            alert('Isi nama dulu!');
-            return;
-        }
+    // Create Room (Seller)
+    function createRoom() {
+        currentName = document.getElementById('seller-name').value;
+        currentNominal = document.getElementById('rupiah-preview').textContent;
+        currentType = document.getElementById('trans-type').value;
+        const wa = document.getElementById('seller-wa').value;
         
-        // Generate 6 digit angka
-        const code = String(Math.floor(100000 + Math.random() * 900000));
-        document.getElementById('generated-code').textContent = code;
-        document.getElementById('seller-result').classList.remove('hidden');
+        // Generate Code
+        currentRoom = String(Math.floor(100000 + Math.random() * 900000));
         
-        // Simpan data room sementara
-        roomData = {
-            code: code,
-            nominal: document.getElementById('nominal').value,
-            nominalDisplay: document.getElementById('rupiah-display').textContent,
-            type: document.getElementById('inc-exc-value').value,
-            sellerWa: document.getElementById('seller-wa').value,
-            sellerName: currentName
-        };
-    }
-
-    function copyCode() {
-        const code = document.getElementById('generated-code').textContent;
-        navigator.clipboard.writeText(code).then(() => {
-            alert('Room code disalin: ' + code);
+        document.getElementById('room-code-display').textContent = currentRoom;
+        document.getElementById('room-result').classList.remove('hidden');
+        document.getElementById('room-result').classList.add('fade-in');
+        
+        // Save to Firebase
+        db.ref('rekber_rooms/' + currentRoom).set({
+            info: {
+                nominal: currentNominal,
+                type: currentType,
+                seller: currentName,
+                sellerWa: wa,
+                createdAt: firebase.database.ServerValue.TIMESTAMP
+            }
         });
     }
 
     function copyRoomCode() {
-        navigator.clipboard.writeText(currentRoom).then(() => {
-            alert('Code disalin: ' + currentRoom);
-        });
+        navigator.clipboard.writeText(currentRoom);
+        showToast('Room code disalin!');
     }
 
-    // Enter as Seller
-    function enterAsSeller() {
-        currentRoom = roomData.code;
-        currentRole = 'seller';
-        setupRoom();
+    function copyBannerCode() {
+        navigator.clipboard.writeText(currentRoom);
+        showToast('Code disalin!');
+    }
+
+    function enterRoom() {
+        document.getElementById('login-page').classList.add('hidden');
+        document.getElementById('chat-page').classList.remove('hidden');
+        document.getElementById('chat-page').classList.add('fade-in');
+        
+        setupChat();
     }
 
     // Join as Buyer
-    function joinAsBuyer() {
-        currentName = document.getElementById('username').value;
-        currentRoom = document.getElementById('buyer-code').value;
-        currentRole = 'buyer';
-        closeModal();
-        setupRoom();
-    }
-
-    // Setup Room (Initialize Firebase)
-    function setupRoom() {
-        document.getElementById('login-page').classList.add('hidden');
-        document.getElementById('chat-page').classList.remove('hidden');
+    function showJoinModal() {
+        const name = document.getElementById('buyer-name').value;
+        const wa = document.getElementById('buyer-wa').value;
+        const code = document.getElementById('buyer-code').value;
         
-        document.getElementById('chat-room-code').textContent = currentRoom;
-        
-        roomRef = db.ref('rekber_rooms/' + currentRoom);
-        
-        if (currentRole === 'seller') {
-            // Simpan data room
-            roomRef.child('info').set({
-                nominal: roomData.nominal,
-                nominalDisplay: roomData.nominalDisplay,
-                type: roomData.type,
-                sellerWa: roomData.sellerWa,
-                sellerName: roomData.sellerName,
-                createdAt: firebase.database.ServerValue.TIMESTAMP
-            });
-            
-            // Auto join Admin
-            roomRef.child('users/admin').set({
-                name: 'Admin MC',
-                role: 'admin',
-                joinedAt: firebase.database.ServerValue.TIMESTAMP
-            });
-            
-            // Display info
-            document.getElementById('display-nominal').textContent = roomData.nominalDisplay;
-            document.getElementById('display-type').textContent = roomData.type;
-            document.getElementById('inc-exc-display').textContent = roomData.type;
-            
-            // Welcome message dari Admin
-            setTimeout(() => {
-                roomRef.child('messages').push({
-                    type: 'admin_welcome',
-                    text: `Halo ${roomData.sellerName}! 👋\n\nSaya Admin MC yang akan menangani transaksi ini.\n\n📋 Detail Transaksi:\n• Nominal: ${roomData.nominalDisplay}\n• Tipe: ${roomData.type}\n• Room: ${currentRoom}\n\nSilakan tunggu buyer join. Jangan kirim barang sebelum buyer payment ya!`,
-                    timestamp: firebase.database.ServerValue.TIMESTAMP
-                });
-            }, 1000);
-            
-            // Notif Telegram untuk Admin (Seller masuk)
-            sendTelegramNotif(`🏪 SELLER JOIN\n\nNama: ${roomData.sellerName}\nWA: ${roomData.sellerWa}\nNominal: ${roomData.nominalDisplay}\nTipe: ${roomData.type}\nRoom: ${currentRoom}`);
-            
-        } else if (currentRole === 'buyer') {
-            const buyerWa = document.getElementById('buyer-wa').value;
-            
-            // Join sebagai buyer
-            roomRef.child('users/buyer').set({
-                name: currentName,
-                wa: buyerWa,
-                role: 'buyer',
-                joinedAt: firebase.database.ServerValue.TIMESTAMP
-            });
-            
-            // Ambil info room
-            roomRef.child('info').once('value', (snapshot) => {
-                const info = snapshot.val();
-                if (info) {
-                    document.getElementById('display-nominal').textContent = info.nominalDisplay || 'Rp0';
-                    document.getElementById('display-type').textContent = info.type || '-';
-                    document.getElementById('inc-exc-display').textContent = info.type || '-';
-                }
-            });
-            
-            // Notif di chat: Buyer masuk
-            roomRef.child('messages').push({
-                type: 'system',
-                text: `${currentName} sebagai buyer telah masuk room`,
-                timestamp: firebase.database.ServerValue.TIMESTAMP
-            });
-            
-            // Notif Telegram untuk Admin (Buyer masuk)
-            sendTelegramNotif(`🛒 BUYER JOIN\n\nNama: ${currentName}\nWA: ${buyerWa}\nRoom: ${currentRoom}`);
+        if(!name || !wa || code.length !== 6) {
+            alert('Lengkapi semua data!');
+            return;
         }
         
-        // Listen messages
-        roomRef.child('messages').on('child_added', (snapshot) => {
-            displayMessage(snapshot.val());
+        currentName = name;
+        currentRoom = code;
+        
+        // Check if room exists
+        db.ref('rekber_rooms/' + currentRoom).once('value', snap => {
+            if(snap.exists()) {
+                const info = snap.val().info;
+                currentNominal = info.nominal;
+                currentType = info.type;
+                
+                // Save buyer
+                db.ref('rekber_rooms/' + currentRoom + '/buyer').set({
+                    name: currentName,
+                    wa: wa,
+                    joinedAt: firebase.database.ServerValue.TIMESTAMP
+                });
+                
+                document.getElementById('login-page').classList.add('hidden');
+                document.getElementById('chat-page').classList.remove('hidden');
+                setupChat();
+                
+                // Notif Telegram lengkap dengan tanggal
+                const now = new Date();
+                const dateStr = now.toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+                const timeStr = now.toLocaleTimeString('id-ID');
+                sendTelegram(`🛒 BUYER JOIN\n\nNama: ${currentName}\nWA: ${wa}\nRoom: ${currentRoom}\nNominal: ${currentNominal}\nType: ${currentType}\n\n📅 ${dateStr}\n⏰ ${timeStr}`);
+                
+                // Notif in chat
+                pushMessage('system', null, `${currentName} sebagai buyer telah masuk room`);
+            } else {
+                alert('Room tidak ditemukan!');
+            }
         });
     }
 
-    function sendTelegramNotif(text) {
-        fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                chat_id: CHAT_ID,
-                text: text,
-                parse_mode: 'HTML'
-            })
-        }).catch(e => console.log('Telegram error'));
+    // Setup Chat
+    function setupChat() {
+        document.getElementById('display-nominal-chat').textContent = currentNominal || 'Rp0';
+        document.getElementById('display-type-chat').textContent = currentType || '-';
+        document.getElementById('banner-code').textContent = currentRoom;
+        
+        roomRef = db.ref('rekber_rooms/' + currentRoom + '/messages');
+        
+        // Load existing
+        roomRef.on('child_added', snap => {
+            const msg = snap.val();
+            displayMessage(msg);
+        });
+        
+        // If seller, show banner and send welcome
+        if(currentRole === 'seller') {
+            document.getElementById('room-banner').classList.remove('hidden');
+            
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('id-ID', {weekday: 'long', year: 'numeric', month: 'long', day: 'numeric'});
+            const timeStr = now.toLocaleTimeString('id-ID');
+            
+            // Welcome message dari admin
+            setTimeout(() => {
+                pushMessage('admin', 'Admin MC', `Halo ${currentName}! 👋\n\nSaya Admin MC yang akan menangani transaksi ini.\n\n📋 Detail Transaksi:\n• Nominal: ${currentNominal}\n• Tipe: ${currentType}\n• Room: ${currentRoom}\n\nSilakan tunggu buyer join. Jangan kirim barang sebelum buyer payment ya!`);
+            }, 500);
+            
+            // Notif Telegram lengkap
+            const wa = document.getElementById('seller-wa').value;
+            sendTelegram(`🏪 SELLER CREATE ROOM\n\nNama: ${currentName}\nWA: ${wa}\nNominal: ${currentNominal}\nType: ${currentType}\nRoom: ${currentRoom}\n\n📅 ${dateStr}\n⏰ ${timeStr}`);
+        }
+    }
+
+    function pushMessage(type, sender, text, imageUrl = null) {
+        roomRef.push({
+            type: type,
+            sender: sender,
+            text: text,
+            imageUrl: imageUrl,
+            timestamp: firebase.database.ServerValue.TIMESTAMP
+        });
     }
 
     function displayMessage(msg) {
         const container = document.getElementById('messages');
         const div = document.createElement('div');
+        div.className = 'msg-wrapper slide-up';
         
-        if (msg.type === 'system') {
-            div.className = 'system-message';
-            div.textContent = msg.text;
-        } else if (msg.type === 'admin_welcome') {
-            div.className = 'admin-message';
-            div.innerHTML = `<div class="admin-bubble">${msg.text.replace(/\n/g, '<br>')}</div>`;
+        const time = new Date(msg.timestamp).toLocaleTimeString('id-ID', {hour: '2-digit', minute: '2-digit'});
+        
+        if(msg.type === 'system') {
+            div.innerHTML = `<div class="msg-system">${msg.text}</div>`;
+        } else if(msg.type === 'admin') {
+            div.innerHTML = `
+                <div class="msg-admin">
+                    <div class="admin-bubble">${msg.text.replace(/\n/g, '<br>')}</div>
+                </div>
+            `;
         } else {
             const isMe = msg.sender === currentName;
-            div.className = `message ${isMe ? 'outgoing' : 'incoming'}`;
+            const bubbleClass = isMe ? 'msg-out' : 'msg-in';
+            const check = isMe ? '<span class="checkmarks">✓✓</span>' : '';
             
-            const time = new Date(msg.timestamp).toLocaleTimeString('id-ID', {
-                hour: '2-digit', minute: '2-digit'
-            });
+            let content = '';
+            if(msg.imageUrl) {
+                content = `<img src="${msg.imageUrl}" class="chat-image" onclick="window.open('${msg.imageUrl}')">`;
+                if(msg.text) content += `<div class="image-caption">${msg.text}</div>`;
+            } else {
+                content = msg.text;
+            }
             
             div.innerHTML = `
-                ${!isMe ? `<div class="msg-sender">${msg.sender}</div>` : ''}
-                <div class="msg-content">${msg.text}</div>
-                <div class="msg-time">${time} ${isMe ? '<span class="check">✓✓</span>' : ''}</div>
+                <div class="${bubbleClass}">
+                    ${!isMe ? `<div class="sender-name">${msg.sender}</div>` : ''}
+                    <div class="bubble-content">${content}</div>
+                    <div class="msg-meta">${time} ${check}</div>
+                </div>
             `;
         }
         
@@ -460,48 +458,41 @@
         container.scrollTop = container.scrollHeight;
     }
 
+    // Send Message
     function sendMessage() {
         const input = document.getElementById('message-input');
         const text = input.value.trim();
-        if (!text || !roomRef) return;
+        if(!text) return;
         
-        roomRef.child('messages').push({
-            sender: currentName,
-            text: text,
-            timestamp: firebase.database.ServerValue.TIMESTAMP
-        });
-        
+        pushMessage('text', currentName, text);
         input.value = '';
     }
 
-    function showFormatMenu() {
-        document.getElementById('format-menu').classList.toggle('hidden');
+    function handleKeyPress(e) {
+        if(e.key === 'Enter') sendMessage();
     }
 
-    function closeFormatMenu() {
-        document.getElementById('format-menu').classList.add('hidden');
-    }
-
-    function insertFormat(type) {
-        const input = document.getElementById('message-input');
-        if (type === 'payment') {
-            input.value = `📋 FORMAT PAYMENT\n\nNominal: ${roomData.nominalDisplay || ''}\nTipe: ${roomData.type || 'INC/EXC'}\n\nSilakan transfer ke rekening:\n[ISI REKENING]\n\nSetelah transfer, kirim bukti screenshot ya!`;
-        } else if (type === 'done') {
-            input.value = `✅ FORMAT PENCAIRAN\n\nTransaksi selesai!\nNominal: ${roomData.nominalDisplay || ''}\n\nDana akan dicairkan ke seller.\nTerima kasih sudah menggunakan jasa rekber!`;
-        }
-        closeFormatMenu();
-    }
-
-    function showRoomInfo() {
-        alert(`Room: ${currentRoom}\nRole: ${currentRole.toUpperCase()}`);
-    }
-
-    // Event listeners
-    document.getElementById('message-input').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage();
-    });
-</script>
-
-</body>
-    </html>
-    
+    // Upload Image
+    function handleImageUpload(input) {
+        const file = input.files[0];
+        if(!file) return;
+        
+        const ref = storage.ref('chat_images/' + Date.now() + '_' + file.name);
+        const upload = ref.put(file);
+        
+        upload.on('state_changed', 
+            snapshot => {
+                // Progress
+                showToast('Mengupload...');
+            }, 
+            error => {
+                showToast('Upload gagal!');
+            }, 
+            () => {
+                upload.snapshot.ref.getDownloadURL().then(url => {
+                    pushMessage('image', currentName, '', url);
+                    showToast('Foto terkirim!');
+                });
+            }
+        );
+      
