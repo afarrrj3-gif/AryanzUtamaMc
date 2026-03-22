@@ -3,252 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Rekber MC - iOS Style</title>
+    <title>Rekber MC</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<!-- HOME PAGE -->
-<div id="page-home" class="page active">
+<!-- PAGE 1: HOME -->
+<div id="page-home" class="page active-page">
     <!-- Banner -->
-    <div class="banner-container">
+    <div class="banner-wrap">
         <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766772767/IMG-20251128-WA0091_ldbe9l.jpg" class="banner-img">
-        <div class="banner-overlay"></div>
-        <div class="banner-content">
+        <div class="banner-dark"></div>
+        <div class="banner-text">
             <h1>Rekber MC</h1>
             <p>Transaksi Aman & Terpercaya</p>
         </div>
     </div>
 
-    <div class="home-content">
-        <!-- Profile Card -->
-        <div class="profile-card ios-card">
-            <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg" class="profile-avatar">
-            <div class="profile-info">
+    <div class="home-body">
+        <!-- Profile -->
+        <div class="profile-box">
+            <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg" class="prof-ava">
+            <div class="prof-info">
                 <h2>AryanzUtama</h2>
-                <span class="badge verified">✓ Admin Verified</span>
+                <span class="verif-badge">✓ Verified</span>
             </div>
         </div>
 
-        <!-- Menu Grid -->
-        <div class="ios-menu">
-            <div class="menu-title">Pilih Peran Anda</div>
+        <!-- Menu -->
+        <div class="menu-box">
+            <p class="menu-label">Pilih Peran</p>
             
-            <button onclick="goToBuyer()" class="ios-button buyer-btn">
-                <div class="btn-icon">🛒</div>
-                <div class="btn-text">
-                    <span class="btn-title">Buyer</span>
-                    <span class="btn-sub">Pembeli / Pelanggan</span>
+            <button class="menu-item buyer" onclick="goBuyer()">
+                <div class="item-icon">🛒</div>
+                <div class="item-text">
+                    <b>Buyer</b>
+                    <span>Pembeli</span>
                 </div>
-                <div class="btn-arrow">›</div>
+                <div class="item-arrow">›</div>
             </button>
 
-            <button onclick="goToSeller()" class="ios-button seller-btn">
-                <div class="btn-icon">🏪</div>
-                <div class="btn-text">
-                    <span class="btn-title">Seller</span>
-                    <span class="btn-sub">Penjual / Merchant</span>
+            <button class="menu-item seller" onclick="goSeller()">
+                <div class="item-icon">🏪</div>
+                <div class="item-text">
+                    <b>Seller</b>
+                    <span>Penjual</span>
                 </div>
-                <div class="btn-arrow">›</div>
+                <div class="item-arrow">›</div>
             </button>
         </div>
 
         <!-- Stats -->
-        <div class="stats-container ios-card">
-            <div class="stat-item">
-                <div class="stat-num">100%</div>
-                <div class="stat-label">Aman</div>
+        <div class="stats-box">
+            <div class="stat">
+                <b>100%</b>
+                <span>Aman</span>
             </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-num">24/7</div>
-                <div class="stat-label">Support</div>
+            <div class="stat-line"></div>
+            <div class="stat">
+                <b>24/7</b>
+                <span>Support</span>
             </div>
-            <div class="stat-divider"></div>
-            <div class="stat-item">
-                <div class="stat-num">0%</div>
-                <div class="stat-label">Fee</div>
+            <div class="stat-line"></div>
+            <div class="stat">
+                <b>0%</b>
+                <span>Fee</span>
             </div>
         </div>
     </div>
 
-    <!-- Admin Trigger -->
-    <div class="ios-footer" onclick="showAdminLogin()">
-        <span>PoweredByAryanzUtama</span>
+    <!-- Footer -->
+    <div class="powered" onclick="openAdmin()">
+        PoweredByAryanzUtama
     </div>
 </div>
 
-<!-- BUYER FORM -->
+<!-- PAGE 2: BUYER FORM -->
 <div id="page-buyer" class="page">
-    <div class="ios-nav">
-        <button onclick="goHome()" class="nav-back">‹ Back</button>
-        <div class="nav-title">Buyer Access</div>
+    <div class="nav-bar">
+        <button onclick="goHome()" class="nav-btn">‹ Back</button>
+        <span>Buyer</span>
     </div>
 
-    <div class="form-container ios-gradient">
-        <div class="form-header">
+    <div class="form-wrap">
+        <div class="form-head">
             <div class="form-icon">🛒</div>
             <h2>Masuk sebagai Buyer</h2>
-            <p>Masukkan data Anda untuk bergabung ke room transaksi</p>
         </div>
 
-        <div class="ios-input-group">
-            <label>Nama Lengkap</label>
-            <div class="input-wrap">
-                <span class="input-icon">👤</span>
-                <input type="text" id="buyer-name" placeholder="Contoh: Budi Santoso">
-            </div>
+        <div class="input-box">
+            <label>Nama</label>
+            <input type="text" id="b-name" placeholder="Nama lengkap">
         </div>
 
-        <div class="ios-input-group">
-            <label>Nomor WhatsApp</label>
-            <div class="input-wrap">
-                <span class="input-icon">📱</span>
-                <input type="tel" id="buyer-wa" placeholder="08xxxxxxxxxx">
-            </div>
+        <div class="input-box">
+            <label>WhatsApp</label>
+            <input type="tel" id="b-wa" placeholder="08xxxxxxxxxx">
         </div>
 
-        <div class="ios-input-group">
+        <div class="input-box">
             <label>Kode Room</label>
-            <div class="input-wrap">
-                <span class="input-icon">🔑</span>
-                <input type="number" id="buyer-code" placeholder="6 digit angka" oninput="checkBuyerForm()">
-            </div>
+            <input type="number" id="b-code" placeholder="6 digit" oninput="checkBuyer()">
         </div>
 
-        <button id="btn-buyer" onclick="joinBuyer()" disabled class="ios-btn-primary">
-            <span>Masuk Room</span>
-            <div class="btn-shine"></div>
+        <button id="btn-b" class="main-btn" onclick="joinBuyer()" disabled>
+            Masuk Room
         </button>
     </div>
 </div>
 
-<!-- SELLER FORM -->
+<!-- PAGE 3: SELLER FORM -->
 <div id="page-seller" class="page">
-    <div class="ios-nav">
-        <button onclick="goHome()" class="nav-back">‹ Back</button>
-        <div class="nav-title">Seller Access</div>
+    <div class="nav-bar">
+        <button onclick="goHome()" class="nav-btn">‹ Back</button>
+        <span>Seller</span>
     </div>
 
-    <div class="form-container ios-gradient-seller">
-        <div class="form-header">
+    <div class="form-wrap seller-bg">
+        <div class="form-head">
             <div class="form-icon">🏪</div>
             <h2>Buat Room Baru</h2>
-            <p>Setup transaksi rekber Anda</p>
         </div>
 
-        <div class="ios-input-group">
-            <label>Nama Seller</label>
-            <div class="input-wrap">
-                <span class="input-icon">👤</span>
-                <input type="text" id="seller-name" placeholder="Nama Anda">
+        <div class="input-box">
+            <label>Nama</label>
+            <input type="text" id="s-name" placeholder="Nama seller">
+        </div>
+
+        <div class="input-box">
+            <label>Nominal</label>
+            <input type="text" id="s-nom" placeholder="50000" onkeyup="formatUang()">
+            <div class="uang-text" id="uang">Rp0</div>
+        </div>
+
+        <div class="input-box">
+            <label>Tipe</label>
+            <div class="type-btns">
+                <button onclick="setTipe('inc')" id="t-inc" class="t-btn">INC</button>
+                <button onclick="setTipe('exc')" id="t-exc" class="t-btn">EXC</button>
             </div>
         </div>
 
-        <div class="ios-input-group">
-            <label>Nominal Transaksi</label>
-            <div class="input-wrap">
-                <span class="input-icon">💰</span>
-                <input type="text" id="nominal" placeholder="50000" onkeyup="formatRupiah(this)">
-            </div>
-            <div class="rupiah-display" id="rupiah-display">Rp0</div>
+        <div class="input-box">
+            <label>WhatsApp</label>
+            <input type="tel" id="s-wa" placeholder="08xxxxxxxxxx" oninput="checkSeller()">
         </div>
 
-        <div class="ios-input-group">
-            <label>Tipe Transaksi</label>
-            <div class="segment-control">
-                <button onclick="setType('inc')" id="seg-inc" class="seg-btn">INC</button>
-                <button onclick="setType('exc')" id="seg-exc" class="seg-btn">EXC</button>
-            </div>
-        </div>
-
-        <div class="ios-input-group">
-            <label>Nomor WhatsApp</label>
-            <div class="input-wrap">
-                <span class="input-icon">📱</span>
-                <input type="tel" id="seller-wa" placeholder="08xxxxxxxxxx" oninput="checkSellerForm()">
-            </div>
-        </div>
-
-        <button id="btn-seller" onclick="createRoom()" disabled class="ios-btn-primary green">
-            <span>Buat Room</span>
-            <div class="btn-shine"></div>
+        <button id="btn-s" class="main-btn green" onclick="buatRoom()" disabled>
+            Buat Room
         </button>
 
-        <div id="room-result" class="room-result-ios hidden">
-            <div class="result-card">
-                <div class="result-label">ROOM CODE</div>
-                <div class="result-code" id="room-code">000000</div>
-                <button onclick="copyCode()" class="ios-btn-copy">📋 Salin Code</button>
-            </div>
-            <button onclick="enterChat('seller')" class="ios-btn-primary">
-                Masuk ke Room ›
-            </button>
+        <div id="hasil-room" class="hasil-box" style="display:none;">
+            <div class="kode-label">ROOM CODE</div>
+            <div class="kode-angka" id="kode">000000</div>
+            <button class="copy-btn" onclick="salinKode()">📋 Salin</button>
+            <button class="main-btn" onclick="masukSeller()">Masuk Room</button>
         </div>
     </div>
 </div>
 
-<!-- ADMIN LOGIN -->
-<div id="page-admin" class="page modal-page">
-    <div class="modal-ios">
-        <div class="modal-icon">🔐</div>
+<!-- PAGE 4: ADMIN LOGIN -->
+<div id="page-admin" class="page admin-bg">
+    <div class="admin-modal">
+        <div class="adm-icon">🔐</div>
         <h3>Admin Access</h3>
-        <p>Masukkan password untuk melihat semua room</p>
-        <input type="password" id="admin-pass" class="ios-pass-input" placeholder="Password">
-        <button onclick="checkAdmin()" class="ios-btn-primary">Masuk</button>
-        <button onclick="closeAdmin()" class="ios-btn-text">Batal</button>
+        <input type="password" id="adm-pass" placeholder="Password">
+        <button class="main-btn" onclick="cekAdmin()">Masuk</button>
+        <button class="batal-btn" onclick="goHome()">Batal</button>
     </div>
 </div>
 
-<!-- CHAT PAGE -->
+<!-- PAGE 5: CHAT -->
 <div id="page-chat" class="page">
-    <!-- Header iOS Style -->
-    <div class="ios-chat-header">
-        <button onclick="exitChat()" class="header-back">‹</button>
-        
-        <div class="header-center">
-            <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg" class="header-avatar">
-            <div class="header-text">
-                <div class="header-name" id="chat-nominal">Rp0</div>
-                <div class="header-sub" id="chat-type">INC</div>
-            </div>
+    <!-- Header -->
+    <div class="chat-head">
+        <button onclick="goHome()" class="back-chat">‹</button>
+        <img src="https://res.cloudinary.com/dtdodhqqi/image/upload/v1766845910/IMG-20251128-WA0094_1_rrrhdn.jpg" class="chat-ava">
+        <div class="chat-info">
+            <span id="chat-nom">Rp0</span>
+            <span id="chat-tipe" class="tipe-badge">INC</span>
         </div>
-
-        <button onclick="showRoomInfo()" class="header-more">•••</button>
+        <button class="menu-chat" onclick="infoRoom()">•••</button>
     </div>
 
-    <!-- Chat Background with Messages -->
-    <div class="chat-background" onclick="closeContextMenu()">
-        <div id="messages" class="messages-ios">
-            <!-- Messages here -->
-        </div>
+    <!-- Messages -->
+    <div class="chat-bg" onclick="tutupMenu()">
+        <div id="chat-msgs" class="msg-list"></div>
     </div>
 
-    <!-- Input Area (iOS Style - Floating) -->
-    <div class="ios-input-bar">
-        <div class="input-blur-layer"></div>
-        
-        <div class="input-content">
-            <button onclick="document.getElementById('file-input').click()" class="input-btn attach">📎</button>
-            <input type="file" id="file-input" hidden accept="image/*" onchange="sendImage(this)">
+    <!-- Input -->
+    <div class="input-float">
+        <div class="blur-bg"></div>
+        <div class="input-row">
+            <button class="btn-clip" onclick="document.getElementById('file-in').click()">📎</button>
+            <input type="file" id="file-in" hidden accept="image/*" onchange="kirimGambar(this)">
             
-            <div class="message-input-wrap">
-                <input type="text" id="msg-input" placeholder="iMessage" onkeypress="if(event.key==='Enter')sendMsg()">
+            <div class="input-only">
+                <input type="text" id="msg-in" placeholder="Pesan" onkeypress="if(event.key==='Enter')kirimPesan()">
             </div>
             
-            <button onclick="sendMsg()" class="input-btn send">➤</button>
+            <button class="btn-kirim" onclick="kirimPesan()">➤</button>
         </div>
     </div>
 </div>
 
-<!-- Context Menu (iOS Style) -->
-<div id="context-menu" class="ios-context-menu hidden">
-    <div class="context-backdrop" onclick="closeContextMenu()"></div>
-    <div class="context-actions">
-        <button onclick="editMessage()" class="context-btn">✏️ Edit</button>
-        <button onclick="deleteMessage()" class="context-btn delete">🗑 Hapus</button>
-        <div class="context-divider"></div>
-        <button onclick="closeContextMenu()" class="context-btn cancel">Batal</button>
+<!-- CONTEXT MENU (Hidden by default) -->
+<div id="ctx-menu" class="ctx-menu" style="display:none;">
+    <div class="ctx-back" onclick="tutupMenu()"></div>
+    <div class="ctx-box">
+        <button onclick="editPesan()">✏️ Edit</button>
+        <button onclick="hapusPesan()" class="red">🗑 Hapus</button>
+        <div class="ctx-line"></div>
+        <button onclick="tutupMenu()">Batal</button>
     </div>
 </div>
 
@@ -276,274 +242,258 @@
     const BOT_TOKEN = "8672339759:AAF_jy2iB5xZlHh6843s-8RkukvJ5-yROto";
     const CHAT_ID = "7129085772";
     
-    let currentRole = '', currentName = '', roomId = '', transType = '', currentNominal = '';
-    let selectedMsgId = null;
-    let longPressTimer;
+    let role = '', nama = '', room = '', tipe = '', nominal = '', msgIdSelect = null;
+    let tekanLama;
 
     // Navigation
     function showPage(id) {
         document.querySelectorAll('.page').forEach(p => {
-            p.classList.remove('active');
             p.style.display = 'none';
+            p.classList.remove('active-page');
         });
-        const page = document.getElementById('page-' + id);
-        page.style.display = 'block';
-        setTimeout(() => page.classList.add('active'), 10);
+        const el = document.getElementById('page-' + id);
+        el.style.display = 'block';
+        setTimeout(() => el.classList.add('active-page'), 10);
     }
 
     function goHome() { showPage('home'); }
-    function goToBuyer() { showPage('buyer'); }
-    function goToSeller() { showPage('seller'); }
-    function showAdminLogin() { showPage('admin'); }
-    function closeAdmin() { showPage('home'); }
+    function goBuyer() { showPage('buyer'); }
+    function goSeller() { showPage('seller'); }
+    function openAdmin() { showPage('admin'); }
 
-    // Format Rupiah
-    function formatRupiah(input) {
-        let val = input.value.replace(/\D/g, '');
-        input.value = val;
-        document.getElementById('rupiah-display').textContent = val ? 
-            'Rp' + parseInt(val).toLocaleString('id-ID') : 'Rp0';
-        checkSellerForm();
+    // Format Uang
+    function formatUang() {
+        let v = document.getElementById('s-nom').value.replace(/\D/g, '');
+        document.getElementById('s-nom').value = v;
+        document.getElementById('uang').textContent = v ? 
+            'Rp' + parseInt(v).toLocaleString('id-ID') : 'Rp0';
+        checkSeller();
     }
 
-    // Segment Control (INC/EXC)
-    function setType(type) {
-        transType = type;
-        document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById('seg-' + type).classList.add('active');
-        checkSellerForm();
+    function setTipe(t) {
+        tipe = t;
+        document.querySelectorAll('.t-btn').forEach(b => b.classList.remove('aktif'));
+        document.getElementById('t-' + t).classList.add('aktif');
+        checkSeller();
     }
 
-    // Validation
-    function checkBuyerForm() {
-        let n = document.getElementById('buyer-name').value;
-        let w = document.getElementById('buyer-wa').value;
-        let c = document.getElementById('buyer-code').value;
-        document.getElementById('btn-buyer').disabled = !(n && w && c.length === 6);
+    function checkBuyer() {
+        let n = document.getElementById('b-name').value;
+        let w = document.getElementById('b-wa').value;
+        let c = document.getElementById('b-code').value;
+        document.getElementById('btn-b').disabled = !(n && w && c.length === 6);
     }
 
-    function checkSellerForm() {
-        let n = document.getElementById('seller-name').value;
-        let m = document.getElementById('nominal').value;
-        let w = document.getElementById('seller-wa').value;
-        document.getElementById('btn-seller').disabled = !(n && m && w && transType);
+    function checkSeller() {
+        let n = document.getElementById('s-name').value;
+        let m = document.getElementById('s-nom').value;
+        let w = document.getElementById('s-wa').value;
+        document.getElementById('btn-s').disabled = !(n && m && w && tipe);
     }
 
-    // Create Room
-    function createRoom() {
-        currentName = document.getElementById('seller-name').value;
-        currentNominal = document.getElementById('rupiah-display').textContent;
-        roomId = String(Math.floor(100000 + Math.random() * 900000));
+    // Buat Room
+    function buatRoom() {
+        nama = document.getElementById('s-name').value;
+        nominal = document.getElementById('uang').textContent;
+        room = String(Math.floor(100000 + Math.random() * 900000));
         
-        document.getElementById('room-code').textContent = roomId;
-        document.getElementById('room-result').classList.remove('hidden');
+        document.getElementById('kode').textContent = room;
+        document.getElementById('hasil-room').style.display = 'block';
         
-        db.ref('rooms/' + roomId).set({
-            info: {
-                nominal: currentNominal,
-                type: transType,
-                seller: currentName,
-                wa: document.getElementById('seller-wa').value
-            }
+        db.ref('rooms/' + room).set({
+            info: { nominal, tipe, seller: nama, wa: document.getElementById('s-wa').value }
         });
 
-        // Telegram Notif
+        // Telegram
         let now = new Date();
         fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: {'Content-Type':'application/json'},
             body: JSON.stringify({
                 chat_id: CHAT_ID,
-                text: `🏪 SELLER CREATE\n${currentName}\n${currentNominal}\n${transType}\nRoom: ${roomId}\n📅 ${now.toLocaleDateString('id-ID')}\n⏰ ${now.toLocaleTimeString('id-ID')}`
+                text: `🏪 SELLER\n${nama}\n${nominal}\n${tipe}\nRoom:${room}\n${now.toLocaleString('id-ID')}`
             })
         });
     }
 
-    function copyCode() {
-        navigator.clipboard.writeText(roomId);
-        showToast('Code disalin!');
+    function salinKode() {
+        navigator.clipboard.writeText(room);
+        alert('Disalin: ' + room);
     }
 
-    // Join Buyer
+    // Join
     function joinBuyer() {
-        currentName = document.getElementById('buyer-name').value;
-        roomId = document.getElementById('buyer-code').value;
+        nama = document.getElementById('b-name').value;
+        room = document.getElementById('b-code').value;
         
-        db.ref('rooms/' + roomId).once('value', snap => {
-            if(snap.exists()) {
-                let info = snap.val().info;
-                currentNominal = info.nominal;
-                transType = info.type;
+        db.ref('rooms/' + room).once('value', s => {
+            if(s.exists()) {
+                let i = s.val().info;
+                nominal = i.nominal;
+                tipe = i.tipe;
                 
-                db.ref('rooms/' + roomId + '/buyer').set({
-                    name: currentName,
-                    wa: document.getElementById('buyer-wa').value
+                db.ref('rooms/' + room + '/buyer').set({
+                    name: nama,
+                    wa: document.getElementById('b-wa').value
                 });
                 
-                enterChat('buyer');
+                masukChat('buyer');
                 
                 let now = new Date();
                 fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
+                    headers: {'Content-Type':'application/json'},
                     body: JSON.stringify({
                         chat_id: CHAT_ID,
-                        text: `🛒 BUYER JOIN\n${currentName}\nRoom: ${roomId}\n📅 ${now.toLocaleDateString('id-ID')}\n⏰ ${now.toLocaleTimeString('id-ID')}`
+                        text: `🛒 BUYER\n${nama}\nRoom:${room}\n${now.toLocaleString('id-ID')}`
                     })
                 });
-            } else {
-                alert('Room tidak ditemukan!');
-            }
+            } else alert('Room tidak ada!');
         });
     }
 
-    // Chat Functions
-    function enterChat(role) {
-        currentRole = role;
+    function masukSeller() {
+        masukChat('seller');
+    }
+
+    function masukChat(r) {
+        role = r;
         showPage('chat');
         
-        document.getElementById('chat-nominal').textContent = currentNominal;
-        document.getElementById('chat-type').textContent = transType;
+        document.getElementById('chat-nom').textContent = nominal;
+        document.getElementById('chat-tipe').textContent = tipe;
         
-        let msgRef = db.ref('rooms/' + roomId + '/messages');
+        let ref = db.ref('rooms/' + room + '/messages');
+        document.getElementById('chat-msgs').innerHTML = '';
         
-        // Clear and load
-        document.getElementById('messages').innerHTML = '';
-        
-        msgRef.on('child_added', snap => {
-            displayMessage(snap.key, snap.val());
+        ref.on('child_added', s => {
+            tampilPesan(s.key, s.val());
         });
 
-        if(role === 'seller') {
+        if(r === 'seller') {
             setTimeout(() => {
-                msgRef.push({
-                    from: 'Admin MC',
-                    text: `Halo ${currentName}! 👋\n\nSaya Admin MC yang akan menangani transaksi ini.\n\n💰 ${currentNominal}\n📌 ${transType}\n🔑 ${roomId}`,
-                    time: new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}),
-                    type: 'text'
+                ref.push({
+                    dari: 'Admin MC',
+                    text: `Halo ${nama}! 👋\n\nSaya Admin MC.\n💰 ${nominal}\n📌 ${tipe}\n🔑 ${room}`,
+                    waktu: new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}),
+                    tipe: 'text'
                 });
             }, 500);
         }
     }
 
-    function displayMessage(key, msg) {
+    function tampilPesan(key, m) {
         let div = document.createElement('div');
-        div.className = 'msg-bubble ' + (msg.from === currentName ? 'out' : 'in');
+        div.className = 'bubble ' + (m.dari === nama ? 'out' : 'in');
         div.dataset.id = key;
         
-        // Long press for iOS menu
-        div.addEventListener('touchstart', handleTouchStart, {passive: false});
-        div.addEventListener('touchend', handleTouchEnd);
-        div.addEventListener('mousedown', handleMouseDown);
-        div.addEventListener('mouseup', handleMouseUp);
-        div.addEventListener('contextmenu', e => e.preventDefault());
+        // Long press
+        div.onmousedown = () => { tekanLama = setTimeout(()=>bukaMenu(key),600); };
+        div.onmouseup = () => clearTimeout(tekanLama);
+        div.ontouchstart = () => { tekanLama = setTimeout(()=>bukaMenu(key),600); };
+        div.ontouchend = () => clearTimeout(tekanLama);
         
-        let time = msg.time || new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'});
-        let check = msg.from === currentName ? '<span class="check">✓✓</span>' : '';
+        let w = m.waktu || new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'});
+        let c = m.dari === nama ? '<i>✓✓</i>' : '';
         
-        if(msg.type === 'img') {
-            div.innerHTML = `<img src="${msg.url}" class="chat-img" onclick="window.open('${msg.url}')">`;
+        if(m.tipe === 'img') {
+            div.innerHTML = `<img src="${m.url}" class="chat-img" onclick="window.open('${m.url}')">`;
         } else {
             div.innerHTML = `
-                ${msg.from !== currentName ? `<div class="sender-name">${msg.from}</div>` : ''}
-                <div class="bubble-text">${msg.text}</div>
-                <div class="bubble-time">${time} ${check}</div>
+                ${m.dari !== nama ? `<div class="pengirim">${m.dari}</div>` : ''}
+                <div class="isi">${m.text}</div>
+                <div class="waktu">${w} ${c}</div>
             `;
         }
         
-        document.getElementById('messages').appendChild(div);
-        scrollToBottom();
-    }
-
-    // Long Press Handlers
-    function handleTouchStart(e) {
-        longPressTimer = setTimeout(() => {
-            showContextMenu(e.currentTarget.dataset.id);
-        }, 600);
-    }
-
-    function handleTouchEnd() {
-        clearTimeout(longPressTimer);
-    }
-
-    function handleMouseDown(e) {
-        longPressTimer = setTimeout(() => {
-            showContextMenu(e.currentTarget.dataset.id);
-        }, 600);
-    }
-
-    function handleMouseUp() {
-        clearTimeout(longPressTimer);
+        document.getElementById('chat-msgs').appendChild(div);
+        document.getElementById('chat-msgs').scrollTop = 99999;
     }
 
     // Context Menu
-    function showContextMenu(msgId) {
-        selectedMsgId = msgId;
-        document.getElementById('context-menu').classList.remove('hidden');
+    function bukaMenu(id) {
+        msgIdSelect = id;
+        document.getElementById('ctx-menu').style.display = 'block';
     }
 
-    function closeContextMenu() {
-        document.getElementById('context-menu').classList.add('hidden');
-        selectedMsgId = null;
+    function tutupMenu() {
+        document.getElementById('ctx-menu').style.display = 'none';
+        msgIdSelect = null;
     }
 
-    function deleteMessage() {
-        if(!selectedMsgId) return;
-        
-        let el = document.querySelector(`[data-id="${selectedMsgId}"]`);
+    function hapusPesan() {
+        if(!msgIdSelect) return;
+        let el = document.querySelector(`[data-id="${msgIdSelect}"]`);
         el.style.transform = 'translateX(100%)';
         el.style.opacity = '0';
         
         setTimeout(() => {
-            db.ref('rooms/' + roomId + '/messages/' + selectedMsgId).update({deleted: true});
-            el.innerHTML = '<div class="deleted-msg">🗑 Pesan telah dihapus</div>';
-            el.className = 'msg-bubble system';
+            db.ref('rooms/' + room + '/messages/' + msgIdSelect).update({hapus:true});
+            el.className = 'bubble system';
+            el.innerHTML = '<div class="hapus-text">🗑 Pesan dihapus</div>';
             el.style.transform = 'translateX(0)';
             el.style.opacity = '1';
         }, 300);
         
-        closeContextMenu();
+        tutupMenu();
     }
 
-    function editMessage() {
-        if(!selectedMsgId) return;
-        // Implementation for edit
-        closeContextMenu();
+    function editPesan() {
+        tutupMenu();
+        // Edit implementation
     }
 
-    // Send Message
-    function sendMsg() {
-        let input = document.getElementById('msg-input');
-        let text = input.value.trim();
-        if(!text) return;
+    // Kirim
+    function kirimPesan() {
+        let inp = document.getElementById('msg-in');
+        let txt = inp.value.trim();
+        if(!txt) return;
         
-        db.ref('rooms/' + roomId + '/messages').push({
-            from: currentName,
-            text: text,
-            time: new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'}),
-            type: 'text'
+        db.ref('rooms/' + room + '/messages').push({
+            dari: nama,
+            text: txt,
+            waktu: new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'}),
+            tipe: 'text'
         });
         
-        input.value = '';
+        inp.value = '';
     }
 
-    function sendImage(input) {
+    function kirimGambar(input) {
         let file = input.files[0];
         if(!file) return;
         
-        let ref = storage.ref('chat/' + Date.now() + '.jpg');
+        let ref = storage.ref('img/' + Date.now() + '.jpg');
         ref.put(file).then(() => {
             ref.getDownloadURL().then(url => {
-                db.ref('rooms/' + roomId + '/messages').push({
-                    from: currentName,
+                db.ref('rooms/' + room + '/messages').push({
+                    dari: nama,
                     url: url,
-                    type: 'img',
-                    time: new Date().toLocaleTimeString('id-ID', {hour:'2-digit', minute:'2-digit'})
+                    tipe: 'img',
+                    waktu: new Date().toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})
                 });
             });
         });
     }
 
-    // Admin Functions
-    function checkAdmin() {
-        if(document.getElementById('admin-pass').value 
+    // Admin
+    function cekAdmin() {
+        if(document.getElementById('adm-pass').value === 'khansa') {
+            alert('Admin mode!');
+            goHome();
+        } else {
+            alert('Salah!');
+        }
+    }
+
+    function infoRoom() {
+        alert(`Room: ${room}\nNominal: ${nominal}\nTipe: ${tipe}`);
+    }
+
+    // Init
+    showPage('home');
+</script>
+
+</body>
+    </html>
+    
